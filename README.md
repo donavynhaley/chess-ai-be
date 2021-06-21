@@ -1,4 +1,4 @@
-# Chess-AI-Backend
+# Chess AI Backend
 Created using Nodejs and MongoDB.
 
 [Template](https://github.com/EBEREGIT/auth-backend)
