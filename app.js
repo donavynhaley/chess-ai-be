@@ -89,7 +89,7 @@ app.post("/login", (request, response) => {
         .then((passwordCheck) => {
 
           // check if password matches
-          if(!passwordCheck) {
+          if (!passwordCheck) {
             return response.status(400).send({
               message: "Passwords does not match",
               error,
@@ -106,7 +106,7 @@ app.post("/login", (request, response) => {
             { expiresIn: "24h" }
           );
 
-          //   return success response
+          // return success response
           response.status(200).send({
             message: "Login Successful",
             email: user.email,
@@ -120,6 +120,50 @@ app.post("/login", (request, response) => {
             error,
           });
         });
+    })
+    // catch error if email does not exist
+    .catch((e) => {
+      response.status(404).send({
+        message: "Email not found",
+        e,
+      });
+    });
+});
+
+// Add game to user
+app.post("/add-game", auth, (request, response) => {
+
+  // check if email exists
+  User.findOne({ email: request.body.email })
+    .then((user) => {
+      // adds game to users games
+      user.games.push(request.body.game)
+      user.save()
+
+      // return success response
+      response.status(200).send({
+        message: "Game Added",
+        email: user.email,
+        games: user.games,
+      });
+    })
+    // catch error if email does not exist
+    .catch((e) => {
+      response.status(404).send({
+        message: "Email not found",
+        e,
+      });
+    });
+});
+
+// get games
+app.get("/games", auth, (request, response) => {
+  // check if email exists
+  User.findOne({ email: request.user.userEmail })
+    .then((user) => {
+      // return success response
+      response.json({ games: user.games });
+
     })
     // catch error if email does not exist
     .catch((e) => {

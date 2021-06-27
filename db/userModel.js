@@ -9,12 +9,20 @@ const UserSchema = new mongoose.Schema({
     unique: [true, "Email Exist"],
   },
 
-  //   password field
+  // password field
   password: {
     type: String,
     required: [true, "Please provide a password!"],
     unique: false,
   },
+
+  // games field
+  games: {
+    type: Array,
+    required: false,
+    unique: false,
+  },
+
 });
 
 // export UserSchema
